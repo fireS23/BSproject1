@@ -10,11 +10,12 @@ struct movie
 struct sans
 {
 	struct movie movie;
-	int zarfiat;
+	int capacity;
 };
+	
 
 struct sans sans[7]={"Joker",20,"Marriage Story",25,"Parasite",30,"Toy Story 4",30,"Once Upon a Time in Hollywood",35,"Little Women",10,"The Irishman",20};
-	
+		
 
 //vari//
 int selection;
@@ -22,10 +23,12 @@ int isans;
 int numberOfSeats;
 
 
+
 void printWelcome(void);
 void printSans(void);
-void printZarfiatOfsans(int isans);
+void printCapacityOfSans(int isans);
 void reserve(void);
+void changeSans(void);
 void exitt(void);
 
 
@@ -34,17 +37,23 @@ void exitt(void);
 //program//
 int main()
 {
-
+//	FILE *f;
+//	f=fopen("salon.txt","r");
+//	int i;
+//	for(i=0;i<7;i++)
+//	{
+//		fscanf(f,"%s %d",sans[i].movie.name,&sans[i].zarfiat);
+//	}	
 	
 	printWelcome();
 	
-	while(selection!=2)
+	while(selection!=3)
 	{
 		switch (selection)
 		{
 		case 1:
 			printSans();
-			printZarfiatOfsans(isans);
+			printCapacityOfSans(isans);
 			reserve();
 			
 			system("pause");
@@ -52,6 +61,14 @@ int main()
             printWelcome();
 			break;
 		case 2:
+			printSans();
+			changeSans();
+			
+			system("pause");
+            system("cls");
+            printWelcome();
+            break;
+		case 3:
 			exitt();
 			break;
 		}	
@@ -68,7 +85,8 @@ void printWelcome(void)
 {
 	printf("WELCOME TO THIS THEATER\n\nMAIN MENU:\n\n");
 	printf("1.Reserve a seat\n");
-	printf("2.Exit\n");
+	printf("2.Change the sans\n");
+	printf("3.Exit\n");
 	printf("\nEnter your selection : ");
 	scanf("%d",&selection);	
 }
@@ -84,22 +102,30 @@ void printSans(void)
 	scanf("%d",&isans);
 }
 
-void printZarfiatOfsans(int isans)
+void printCapacityOfSans(int isans)
 {
-	printf("\nzarfiat of these movie is %d\n",sans[isans-1].zarfiat);
+	printf("\ncapacityof these movie is %d\n",sans[isans-1].capacity);
 	printf("\nHow many seats do you want?\n");
 	scanf("%d",&numberOfSeats);
 }
 
 void reserve(void)
 {
-	if(numberOfSeats<=sans[isans-1].zarfiat)
+	if(numberOfSeats<=sans[isans-1].capacity)
 	{
-		sans[isans-1].zarfiat=sans[isans-1].zarfiat-numberOfSeats;
-		printf("successfully reserved.\n\n",sans[isans-1].zarfiat);
+		sans[isans-1].capacity=sans[isans-1].capacity-numberOfSeats;
+		printf("successfully reserved.\n\n",sans[isans-1].capacity);
 	}
 	else
 		printf("sorry, the numbers of seats are more than capacity.\n");	
+}
+void changeSans(void)
+{
+	printf("you can change \"%s\" \n",sans[isans-1].movie.name);
+	printf("please Enter the name of the new movie:");
+	scanf("%s",sans[isans-1].movie.name);
+	printf("please Enter the new capacity:");
+	scanf("%d",&sans[isans-1].capacity);
 }
 
 void exitt(void)
