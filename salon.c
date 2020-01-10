@@ -2,27 +2,25 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct movie
+struct Movie
 {
 	char name[40];		
 };
 
-struct sans
+struct Sans
 {
-	struct movie movie;
+	struct Movie Movie;
 	int capacity;
 };
 	
-
-struct sans sans[7]={"Joker",20,"Marriage Story",25,"Parasite",30,"Toy Story 4",30,"Once Upon a Time in Hollywood",35,"Little Women",10,"The Irishman",20};
+struct Sans Sans[7];
 		
-
-//vari//
+//variable//
 int selection;
 int isans;
 int numberOfSeats;
 
-
+//functions//
 
 void printWelcome(void);
 void printSans(void);
@@ -37,13 +35,16 @@ void exitt(void);
 //program//
 int main()
 {
-//	FILE *f;
-//	f=fopen("salon.txt","r");
-//	int i;
-//	for(i=0;i<7;i++)
-//	{
-//		fscanf(f,"%s %d",sans[i].movie.name,&sans[i].zarfiat);
-//	}	
+	int i;
+	
+	FILE *f;
+	f=fopen("file.txt","rb+"); //file exist in the same folder with this program//
+	
+	for(i=0;i<7;i++)
+	{
+	fseek( f, i * sizeof( struct Sans ), SEEK_SET );
+	fread( &Sans[i], sizeof( struct Sans ), 1, f );
+	}	
 	
 	printWelcome();
 	
@@ -51,7 +52,7 @@ int main()
 	{
 		switch (selection)
 		{
-		case 1:
+		case 1: //reserve//
 			printSans();
 			printCapacityOfSans(isans);
 			reserve();
@@ -60,7 +61,7 @@ int main()
             system("cls");
             printWelcome();
 			break;
-		case 2:
+		case 2: //change//
 			printSans();
 			changeSans();
 			
@@ -68,16 +69,20 @@ int main()
             system("cls");
             printWelcome();
             break;
-		case 3:
+		case 3: //exit//
 			exitt();
 			break;
 		}	
 	}
-
 	
+	for(i=0;i<7;i++)
+	{
+	fseek( f, i * sizeof( struct Sans ), SEEK_SET );
+	fwrite( &Sans[i], sizeof( struct Sans), 1, f );
+	}
+	fclose(f);
+	return 0;
 }
-
-
 
 //functions//
 
@@ -97,35 +102,35 @@ void printSans(void)
 	
 	printf("\nThese are the sans:\n");
 	for(i=0;i<7;i++)
-	printf("%d.%-40s [%d:00]\n",i+1,sans[i].movie.name,11+2*i);
+	printf("%d.%-40s [%d:00]\n",i+1,Sans[i].Movie.name,11+2*i);
 	printf("\nEnter your sans : ");
 	scanf("%d",&isans);
 }
 
 void printCapacityOfSans(int isans)
 {
-	printf("\ncapacityof these movie is %d\n",sans[isans-1].capacity);
+	printf("\ncapacityof these movie is %d\n",Sans[isans-1].capacity);
 	printf("\nHow many seats do you want?\n");
 	scanf("%d",&numberOfSeats);
 }
 
 void reserve(void)
 {
-	if(numberOfSeats<=sans[isans-1].capacity)
+	if(numberOfSeats<=Sans[isans-1].capacity)
 	{
-		sans[isans-1].capacity=sans[isans-1].capacity-numberOfSeats;
-		printf("successfully reserved.\n\n",sans[isans-1].capacity);
+		Sans[isans-1].capacity=Sans[isans-1].capacity-numberOfSeats;
+		printf("successfully reserved.\n\n",Sans[isans-1].capacity);
 	}
 	else
 		printf("sorry, the numbers of seats are more than capacity.\n");	
 }
 void changeSans(void)
 {
-	printf("you can change \"%s\" \n",sans[isans-1].movie.name);
+	printf("you can change \"%s\" \n",Sans[isans-1].Movie.name);
 	printf("please Enter the name of the new movie:");
-	scanf("%s",sans[isans-1].movie.name);
+	scanf("%s",Sans[isans-1].Movie.name);
 	printf("please Enter the new capacity:");
-	scanf("%d",&sans[isans-1].capacity);
+	scanf("%d",&Sans[isans-1].capacity);
 }
 
 void exitt(void)
